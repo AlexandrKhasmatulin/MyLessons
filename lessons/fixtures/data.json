@@ -1,0 +1,27 @@
+[
+  {
+    
+    "pk": 1,
+    "fields": {
+      "user": "Alex",
+      "date_of_payment": "22.01.2023",
+      "paid_lesson":"Основы",
+      "paid_course": null,
+      "amount_of_payment":"5000",
+      "way_of_payment": "debet card",
+      
+    }
+  },
+  {
+    
+    "pk": 2,
+    "fields": {
+      "user": "Bob",
+      "date_of_payment": "22.01.2023",
+      "paid_lesson":"Основы",
+      "paid_course": null,
+      "amount_of_payment":"5000",
+      "way_of_payment": "debet card"
+    }
+  }
+]
