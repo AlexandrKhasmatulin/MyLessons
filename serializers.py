@@ -5,6 +5,9 @@ from rest_framework.fields import SerializerMethodField
 from lessons.models import Course, Lesson
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from lessons.validators import validator_prohibited_link
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -17,6 +20,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class LessonSerializer(serializers.ModelSerializer):
+    linkvideo = serializers.URLField(validators=validator_prohibited_link)
     class Meta:
         model = Lesson
         fields = '__all__'

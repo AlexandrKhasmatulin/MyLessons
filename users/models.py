@@ -1,11 +1,15 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from lessons.models import Lesson
+
 NULLABLE = {'blank': True, 'null': True}
 # Create your models here.
 class UserRoles(models.TextChoices):
     MEMBER = 'member', _('member')
     MODERATOR = 'moderator', _('moderator')
+
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name='почта')
@@ -16,3 +20,4 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+

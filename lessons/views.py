@@ -5,6 +5,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from lessons.models import Course, Lesson
+from lessons.paginators import LessonPaginator
 from lessons.permissions.permissions import IsOwner, IsModerator
 from serializers import CourseSerializer, LessonSerializer, MyTokenObtainPairSerializer
 
@@ -28,6 +29,7 @@ class LessonListAPIView(generics.ListAPIView):
     filterset_fields = ('lesson_name', 'way_of_payment')
     ordering_fields = ('date_of_payment')
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+    pagination_class = LessonPaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
