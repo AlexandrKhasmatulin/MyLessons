@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from lessons.models import Lesson
+from MyLessons import settings
+from lessons.models import Lesson, Course
 
 NULLABLE = {'blank': True, 'null': True}
 # Create your models here.
@@ -20,4 +21,13 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-
+class Subscription(models.Model):
+    """
+    Stores a single subscription to course entry, related to
+    :model:`courses.Course` and to :model:`users.User` .
+    """
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,
+                               verbose_name='course')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, verbose_name='user',
+                             **NULLABLE)

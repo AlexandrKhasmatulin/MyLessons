@@ -27,8 +27,13 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
+
     lesson = LessonSerializer()
     number_of_lessons = SerializerMethodField()
+    def subscription(self, validated_data):
+        subscription = self.context['subscription']
+        validated_data['subscription'] = subscription
+        return subscription
     def get_number_of_lessons(self, course):
         return Course.objects.filter(lesson=course.lesson).count()
 
