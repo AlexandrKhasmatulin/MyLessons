@@ -19,8 +19,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
+
 class LessonSerializer(serializers.ModelSerializer):
-    linkvideo = serializers.URLField(validators=validator_prohibited_link)
+    linkvideo = serializers.URLField(validators=[validator_prohibited_link], read_only=True)
+
     class Meta:
         model = Lesson
         fields = '__all__'
@@ -30,13 +32,14 @@ class CourseSerializer(serializers.ModelSerializer):
 
     lesson = LessonSerializer()
     number_of_lessons = SerializerMethodField()
+
     def subscription(self, validated_data):
         subscription = self.context['subscription']
         validated_data['subscription'] = subscription
         return subscription
+
     def get_number_of_lessons(self, course):
         return Course.objects.filter(lesson=course.lesson).count()
-
 
     class Meta:
         model = Course
