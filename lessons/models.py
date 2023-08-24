@@ -33,10 +33,10 @@ class Payments(models.Model):
     date_of_payment = models.CharField(max_length=30, verbose_name='Дата Платежа')
     paid_lesson = models.ForeignKey("Lesson", on_delete=models.CASCADE, verbose_name='Оплаченный урок', **NULLABLE)
     paid_course = models.ForeignKey("Course", on_delete=models.CASCADE, verbose_name='Оплаченый курс', **NULLABLE)
-    amount_of_payment = models.IntegerField(verbose_name='Сумма оплаты')
-    way_of_payment = models.CharField(max_length=150, verbose_name='Способ оплаты')
+    amount_of_payment = models.IntegerField(verbose_name='Сумма оплаты', **NULLABLE)
+    way_of_payment = models.CharField(max_length=150, verbose_name='Способ оплаты', **NULLABLE)
     def __str__(self):
-        return f'{self.date_of_payment} {self.amount_of_payment} {self.way_of_payment}'
+        return f'{self.date_of_payment} {self.amount_of_payment}'
 
     class Meta:
         verbose_name = 'Платеж'

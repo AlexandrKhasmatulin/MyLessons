@@ -8,6 +8,18 @@ from lessons.models import Course, Lesson
 from lessons.paginators import LessonPaginator
 from lessons.permissions.permissions import IsOwner, IsModerator
 from serializers import CourseSerializer, LessonSerializer, MyTokenObtainPairSerializer
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.contrib.auth import get_user_model
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.contrib.auth import get_user_model
+
+@login_required(login_url='/users/login')
+def secure(request):
+    user = request.user
+    return render(request, 'secure.html', {'email': user.email})
 
 
 # Create your views here.
