@@ -9,49 +9,60 @@ from rest_framework.test import APITestCase
 from lessons.models import Lesson, Course
 from users.models import User
 
-class SimpleTest(TestCase):
-    def setUp(self):
-        User = get_user_model()
-        user = User.objects.create_user('temporary@gmail.com', 'temporary')
+class LessonTest(APITestCase):
 
-    def test_secure_page(self):
-        User = get_user_model()
-        self.client.login(email='temporary@gmail.com', password='temporary')
-        response = self.client.get('/manufacturers/', follow=True)
-        user = User.objects.get(email='temporary@gmail.com')
-        self.assertEqual(response.context['email'], 'temporary@gmail.com')
-# Create your tests here.
-class LessonTestCase(APITestCase):
+    def create_member(self):
+        """Creates a new MEMBER user"""
+        # Create test user with MEMBER role
+        self.user_member = User.objects.create(
+            email='test@gmail.com',
+            is_active=True,
+        )
+        self.user_member.set_password('test')
+        self.user_member.save()
+
+    def create_moderator(self):
+        """Creates a new MODERATOR user"""
+        # Create test user with MEMBER role
+        self.user_moderator = User.objects.create(
+            email='test2@gmail.com',
+            is_active=True,
+            role='moderator'
+        )
+        self.user_moderator.set_password('test')
+        self.user_moderator.save()
+
     def setUp(self) -> None:
-        pass
+        """Set up initial objects for each test"""
+        # Create MEMBER user
+        self.create_member()
+        # Create MODERATOR user
+        self.create_moderator()
 
-    def test_LessonCreateAPIView(self):
-        data = {
-        'lesson_name':'test',
-        'description':'test'
-        }
-        response=self.client.post(
-            '/lesson/create/',
-            data = data
+        # Create Course object
+        self.course = Course.objects.create(
+            course_name='2',
+            description='course description'
         )
-        print(response)
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_201_CREATED)
-        self.assertTrue(
-            Lesson.object.all().exists()
+        # Create Lesson object
+        self.lesson = Lesson.objects.create(
+            lesson_name='test lesson',
+            description='lesson description',
+            course=self.course,
+            owner=self.user_member
         )
 
-    def test_LessonListAPIView(self):
+    def test_create_lesson(self):
+        """Testing lesson creation"""
+        # Authenticate user without token
+        self.client.force_authenticate(self.user_member)
+
         data = {
-        'lesson_name':'test',
-        'description':'test'
+            'lesson_name': 'test lesson2',
+            'description': 'lesson2 description',
+            'course': self.course.id,
         }
-        response=self.client.post(
-            '/lesson/list/',
-            data = data
+        # Create second lesson
+        response = self.client.post(
+            reverse("courses:lesson-create"),
         )
-        print(response)
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_200_OK)

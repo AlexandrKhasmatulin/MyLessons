@@ -16,11 +16,12 @@ class Course(models.Model):
         verbose_name_plural = 'Курсы'
 
 class Lesson(models.Model):
-    #id = models.AutoField(verbose_name='ID урока')
+    course = models.ForeignKey("Course", on_delete=models.CASCADE, default='1')
     lesson_name = models.CharField(max_length=150, verbose_name='Название урока')
     description = models.TextField(max_length=500, verbose_name='Описание урока')
     preview = models.ImageField(upload_to='users/', verbose_name='превью', **NULLABLE)
     linkvideo = models.URLField(verbose_name='превью', **NULLABLE)
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, default='1')
     def __str__(self):
         return f'{self.lesson_name} {self.description}'
 
