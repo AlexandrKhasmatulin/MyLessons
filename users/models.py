@@ -27,7 +27,7 @@ class Subscription(models.Model):
     :model:`courses.Course` and to :model:`users.User` .
     """
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
-                               verbose_name='course')
+                               verbose_name='course', default= 1)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, verbose_name='user',
                              **NULLABLE)
