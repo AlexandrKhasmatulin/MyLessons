@@ -60,9 +60,27 @@ class LessonTest(APITestCase):
         data = {
             'lesson_name': 'test lesson2',
             'description': 'lesson2 description',
-            'course': self.course.id,
+            'courses': self.course.id,
         }
         # Create second lesson
         response = self.client.post(
-            reverse("courses:lesson-create"),
+            reverse("lessons:lesson-create"),
         )
+    def test_list_lesson(self):
+        """Testing lesson creation"""
+        # Authenticate user without token
+        self.client.force_authenticate(self.user_member)
+
+        data = {
+            'lesson_name': 'test lesson2',
+            'description': 'lesson2 description',
+            'courses': self.course.id,
+            'lesson_name': 'test lesson3',
+            'description': 'lesson3 description',
+            'courses': self.course.id,
+        }
+        # Create second lesson
+        response = self.client.post(
+            reverse("lessons:lesson-list"),
+        )
+
