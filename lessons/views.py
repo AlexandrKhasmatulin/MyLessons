@@ -4,7 +4,7 @@ from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from lessons.models import Course, Lesson
+from lessons.models import Course, Lesson, Payments
 from lessons.paginators import LessonPaginator
 from lessons.permissions.permissions import IsOwner, IsModerator
 from serializers import CourseSerializer, LessonSerializer, MyTokenObtainPairSerializer
@@ -37,9 +37,6 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ('lesson_name', 'way_of_payment')
-    ordering_fields = ('date_of_payment')
     #permission_classes = [IsAuthenticated, IsOwner | IsModerator]
     pagination_class = LessonPaginator
 
@@ -61,3 +58,12 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
     #permission_classes = (IsAuthenticated)
+
+class PaymentsListAPIView(generics.ListAPIView):
+    serializer_class = LessonSerializer
+    queryset = Payments.objects.all()
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ('paid_lesson', 'way_of_payment')
+    ordering_fields = ('date_of_payment')
+    #permission_classes = [IsAuthenticated, IsOwner | IsModerator]
+    pagination_class = LessonPaginator

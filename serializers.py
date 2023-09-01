@@ -41,6 +41,22 @@ class CourseSerializer(serializers.ModelSerializer):
     def get_number_of_lessons(self, course):
         return Course.objects.filter(lesson=course.lesson).count()
 
+    def payment(self, course):
+        import stripe
+        stripe.api_key = "sk_test_51NlIXvJ2YOyuYIQ7GNsSlk7lT6qG76Bq94vEU7pLeDUMfzM0tC5UIwZReTkWiCWlAF4gOTCjvoc0amzEis6ZerQK00zVXofPkF"
+        stripe.PaymentMethod.create(
+            type="card",
+            card={
+                "number": "4242424242424242",
+                "exp_month": 8,
+                "exp_year": 2020,
+                "cvc": "314",
+            },
+        )
+        stripe.PaymentMethod.retrieve(
+            "pm_1EUmzw2xToAoV8choYUtciXR",
+        )
+
     class Meta:
         model = Course
         fields = '__all__'
