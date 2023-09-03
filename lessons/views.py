@@ -4,7 +4,7 @@ from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from lessons.models import Course, Lesson, Payments
+from lessons.models_lessons import Course, Lesson, Payments
 from lessons.paginators import LessonPaginator
 from lessons.permissions.permissions import IsOwner, IsModerator
 from serializers import CourseSerializer, LessonSerializer, MyTokenObtainPairSerializer

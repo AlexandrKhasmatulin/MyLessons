@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.test import APITestCase
 
-from lessons.models import Lesson, Course
+from lessons.models_lessons import Lesson, Course
 from users.models import User
 
 class LessonTest(APITestCase):

@@ -1,4 +1,7 @@
+
 from django.db import models
+
+
 NULLABLE = {'blank': True, 'null': True}
 # Create your models here.
 class Course(models.Model):
@@ -42,5 +45,17 @@ class Payments(models.Model):
     class Meta:
         verbose_name = 'Платеж'
         verbose_name_plural = 'Платежи'
+
+class Mailing(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Тема письма", **NULLABLE)
+    content = models.TextField(verbose_name='Содержимое письма', **NULLABLE)
+
+
+    class Meta:
+        verbose_name = "Сообщение"
+        verbose_name_plural = "Сообщения"
+
+    def __str__(self):
+        return f"{self.title}"
 
 
