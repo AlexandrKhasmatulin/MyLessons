@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-
+from rest_framework.generics import get_object_or_404
 
 from lessons.models import Course, Lesson
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from lessons.tasks import send_message_about_subscription
 from lessons.validators import validator_prohibited_link
+from users.models import User
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -33,9 +35,11 @@ class CourseSerializer(serializers.ModelSerializer):
     lesson = LessonSerializer()
     number_of_lessons = SerializerMethodField()
 
-    def subscription(self, validated_data):
+    def subscription(self, validated_data, request):
+        user = get_object_or_404(User, pk=request.data.get('user'))
         subscription = self.context['subscription']
         validated_data['subscription'] = subscription
+        send_message_about_subscription.delay(user.username)
         return subscription
 
     def get_number_of_lessons(self, course):
